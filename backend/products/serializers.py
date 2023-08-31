@@ -1,22 +1,26 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
-from .validators import validate_title_no_hello
+from api.serializers import UserPublicSerializer
+from .validators import validate_title_no_hello, unique_product_title
 from .models import Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    user = UserPublicSerializer(read_only=True)
+    my_user_data = serializers.SerializerMethodField(read_only=True)
     my_discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
         view_name='product-detail',
         lookup_field='pk'
         )
-    title = serializers.CharField(validators=[validate_title_no_hello])
+    title = serializers.CharField(validators=[validate_title_no_hello, 
+    unique_product_title])
     # email = serializers.EmailField(write_only=True)
     class Meta:
         model = Product
         fields = [
-            # 'user',
+            'user',
             'url',
             'edit_url',
             'pk',
@@ -25,6 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price', 
             'sales_price', 
             'my_discount',
+            'get_my_user_data'
         ]
 
     ''' 
@@ -37,6 +42,11 @@ class ProductSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError(f"{value} is already a product name.
     #         ")
     #     return value
+
+    def get_my_user_data(self, obj):
+        return {
+            "username": obj.user.username
+        }
 
     def create(self, validated_data):
         # return Product.objects.create(**validated_data)
