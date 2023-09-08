@@ -25,10 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party api services
+    'algoliasearch_django',
+    # third party packages
     'rest_framework',
     'rest_framework.authtoken',
+
+    # internal apps
     'api',
     'products',
+    'search',
 ]
 
 MIDDLEWARE = [
@@ -122,5 +128,14 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
+    ], 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10 
+}
+
+
+ALGOLIA = {
+    'APPLICATION_ID': 'Z2GLI666QN',
+    'API_KEY': 'cf79c0732433b5e1c7435b0049a48c4e',
+    'INDEX_PREFIX': 'cfe'
 }

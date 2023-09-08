@@ -7,7 +7,7 @@ from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
     user = UserPublicSerializer(read_only=True)
-    my_user_data = serializers.SerializerMethodField(read_only=True)
+    # my_user_data = serializers.SerializerMethodField(read_only=True)
     my_discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price', 
             'sales_price', 
             'my_discount',
-            'get_my_user_data'
+            # 'my_user_data'
         ]
 
     ''' 
@@ -43,10 +43,10 @@ class ProductSerializer(serializers.ModelSerializer):
     #         ")
     #     return value
 
-    def get_my_user_data(self, obj):
-        return {
-            "username": obj.user.username
-        }
+    # def get_my_user_data(self, obj):
+    #     return {
+    #         "username": obj.user.username
+    #     }
 
     def create(self, validated_data):
         # return Product.objects.create(**validated_data)

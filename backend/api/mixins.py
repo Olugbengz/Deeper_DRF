@@ -10,10 +10,10 @@ class UserQuerySetMixin():
     user_field = 'user'
     allow_staff_view = False
     def get_queryset(self, *args, **kwargs):
-        user = self.request.IsAdminUser
+        # user = self.request.IsAdminUser
         lookup_data = {}
         lookup_data[self.user_field] = self.request.user
         qs = super().get_queryset(*args, **kwargs)
-        if allow_staff_view and user.is_staff:
-            return qs
+        # if allow_staff_view and user.is_staff:
+        #     return qs
         return qs.filter(**lookup_data)
